@@ -1,0 +1,17 @@
+{
+  "name": "slackpushservice",
+  "version": "1.0.0",
+  "description": "slack push service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "akshay",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/client": "^4.8.0"
+  }
+}
