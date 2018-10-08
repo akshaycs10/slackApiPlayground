@@ -12,6 +12,9 @@
   "author": "akshay",
   "license": "ISC",
   "dependencies": {
-    "@slack/client": "^4.8.0"
+    "async": "^2.6.1",
+    "cron": "^1.4.1",
+    "dotenv": "^6.0.0",
+    "request-promise": "^4.2.2"
   }
 }

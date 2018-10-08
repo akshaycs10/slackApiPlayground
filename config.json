@@ -1,0 +1,7 @@
+{
+	"usersBatchLength": 1,
+	"postMessageEndpoint": "https://slack.com/api/chat.postMessage",
+	"getUserEndpoint": "https://slack.com/api/users.list",
+	"postMessageContent": "Welcome to American Express donation link:: https://google.com",
+	"cronJobTimeZone": "Asia/Kolkata"
+}
