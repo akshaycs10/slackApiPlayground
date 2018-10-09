@@ -26,7 +26,7 @@ new CronJob('0 24 0 * * *', onTick, null, true, config.cronJobTimeZone);
 
 //cron-job to be called onTick
 function onTick() {
-  console.log('You will see this message every second');
+  console.log('******* You will see this message on Cron-Job start ********');
   getWorkspaceUserList();
 }
 
@@ -35,7 +35,7 @@ function getWorkspaceUserList() {
   var options = {
     uri: config.getUserEndpoint,
     qs: {
-      token: process.env.apitoken // -> uri + '?access_token=xxxxx%20xxxxx'
+      token: process.env.apptoken // -> uri + '?access_token=xxxxx%20xxxxx'
     },
     headers: {
       'User-Agent': 'Request-Promise'
@@ -66,9 +66,10 @@ function pushMessageToAll(usersList) {
       var options = {
         uri: config.postMessageEndpoint,
         qs: {
-          token: process.env.apitoken, // -> uri + '?access_token=xxxxx%20xxxxx'
+          token: process.env.apptoken, // -> uri + '?access_token=xxxxx%20xxxxx'
           channel: user.id, //user channel id	
-          text: config.postMessageContent
+          text: config.postMessageContent,
+          as_user: true
         },
         headers: {
           'User-Agent': 'Request-Promise'
