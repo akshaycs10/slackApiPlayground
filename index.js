@@ -22,7 +22,7 @@ Months: 0-11 (Jan-Dec)
 Day of Week: 0-6 (Sun-Sat)
 timezone supported: http://momentjs.com/timezone/
 **/
-new CronJob('0 24 0 * * *', onTick, null, true, config.cronJobTimeZone);
+new CronJob(config.cronTime, onTick, null, true, config.cronJobTimeZone);
 
 //cron-job to be called onTick
 function onTick() {
@@ -92,7 +92,7 @@ function pushMessageToAll(usersList) {
       if (error) {
         console.error("pushMessageToAll: final callback, error:", error);
       } else {
-        console.log("pushMessageToAll: final callback, Cron-Job completed");
+        console.log("pushMessageToAll: final callback, Cron-Job completed, sent messages to users:",usersList.length);
       }
     });
 }

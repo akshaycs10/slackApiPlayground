@@ -1,7 +1,8 @@
 {
-	"usersBatchLength": 1,
+	"usersBatchLength": 5,
 	"postMessageEndpoint": "https://slack.com/api/chat.postMessage",
 	"getUserEndpoint": "https://slack.com/api/users.list",
-	"postMessageContent": "Testing app messages, please ignore",
-	"cronJobTimeZone": "Asia/Kolkata"
+	"postMessageContent": "Welcome to American Express donation platform: https://asdf.xyz",
+	"cronJobTimeZone": "Asia/Kolkata",
+	"cronTime": "0 */1 * * * *"
 }
