@@ -52,7 +52,7 @@ function getWorkspaceUserList() {
   var options = {
     uri: config.getUserEndpoint,
     qs: {
-      token: process.env.apptoken // -> uri + '?access_token=xxxxx%20xxxxx'
+      token: process.EPASS_ENV.apptoken // -> uri + '?access_token=xxxxx%20xxxxx'
     },
     headers: {
       'User-Agent': 'Request-Promise'
@@ -83,7 +83,7 @@ function pushMessageToAll(usersList) {
       var options = {
         uri: config.postMessageEndpoint,
         qs: {
-          token: process.env.apptoken, // -> uri + '?access_token=xxxxx%20xxxxx'
+          token: process.EPASS_ENV.apptoken, // -> uri + '?access_token=xxxxx%20xxxxx'
           channel: user.id, //user channel id	
           text: config.postMessageContent
           // as_user: true //uncomment when msg context: APP. Otherwise bot.
