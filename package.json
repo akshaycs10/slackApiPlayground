@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "node test/testRun.js",
-    "posttest": " npm run build",
-    "build": "gulp dist",
     "start": "nodemon index.js",
-    "prod": "nodemon dist/index.js"
+    "build": "gulp dist",
+    "posttest": "npm install && ./node_modules/.bin/gulp build",
+    "prod": "npm run posttest && nodemon index.js"
   },
   "keywords": [
     "nodejs"
@@ -19,7 +19,9 @@
     "async": "^2.6.1",
     "cron": "^1.4.1",
     "dotenv": "^6.0.0",
+    "express": "^4.16.4",
     "gulp": "^3.9.1",
+    "https": "^1.0.0",
     "nodemon": "^1.18.4",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"

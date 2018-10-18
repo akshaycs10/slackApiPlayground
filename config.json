@@ -4,6 +4,7 @@
 	"getUserEndpoint": "https://slack.com/api/users.list",
 	"postMessageContent": "Welcome to American Express donation platform: https://asdf.xyz",
 	"cronJobTimeZone": "Asia/Kolkata",
-	"cronTime": "0 0 *1 * * *",
-	"healthCheckPort": 3000
+	"cronTime": "0 0 */12 * * *",
+	"healthCheckPort": 8443,
+	"apptoken": "bot-token-here"
 }

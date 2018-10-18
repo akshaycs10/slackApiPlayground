@@ -23,7 +23,11 @@ var paths = {
   distCSS: './*.css',
   distJS: './*.js'
 };
-
+var srcPath = [
+  '**/*',
+  '!gulpfile.js',
+  '!.*'
+];
 /**
  * DEVELOPMENT
  */
@@ -65,7 +69,9 @@ gulp.task('default', ['watch']);
  * DEVELOPMENT END
  */
 
-
+gulp.task('dist',() => {
+  gulp.src('node_modules/**/*').pipe(gulp.dest('./dist/node_modules'));
+})
 
 /**
  * PRODUCTION
@@ -86,7 +92,7 @@ gulp.task('js:dist', function () {
     .pipe(concat('script.min.js'))
     .pipe(gulp.dest(paths.dist));
 });
-gulp.task('dist',['inject:dist'])
+// gulp.task('dist',['inject:dist'])
 gulp.task('copy:dist', ['html:dist', 'css:dist', 'js:dist']);
 gulp.task('inject:dist', ['copy:dist'], function () {
   var css = gulp.src(paths.distCSS);
@@ -96,7 +102,10 @@ gulp.task('inject:dist', ['copy:dist'], function () {
     .pipe(inject( js, { relative:true } ))
     .pipe(gulp.dest(paths.dist));
 });
-gulp.task('build', ['inject:dist']);
+gulp.task('build',function () {
+  return gulp.src(srcPath)
+    .pipe(gulp.dest('dist/'))
+});
 /**
  * PRODUCTION END
  */

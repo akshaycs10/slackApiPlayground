@@ -8,8 +8,12 @@
  */
 
 require('dotenv').config()
-var request = require('request-promise');
-var fs = request('fs');
+var request = require('request-promise').defaults({
+    proxy:'http://hostname:port',
+    strictSSL :false,
+    // agent: sslOptions.agent 
+});
+var fs = require('fs');
 var async = require('async');
 var CronJob = require('cron').CronJob;
 var config = require('./config.json');
@@ -17,19 +21,23 @@ var express = require('express');
 var app = express();
 var https = require('https');
 var sslOptions = {
-   // key: fs.readFileSync('/opt/epaas/certs/key', 'utf8'),
-   // cert: ['/opt/epaas/certs/cert', '/opt/epaas/certs/ca']
-   //   .map(c => fs.readFileSync(c, 'utf8'))
-   //   .join(os.EOL),
-   // passphrase: fs.readFileSync('/opt/epaas/certs/pass', 'utf8'),
+   key: fs.readFileSync('/opt/epaas/certs/key', 'utf8'),
+   cert: fs.readFileSync('/opt/epaas/certs/cert', 'utf8'),
+   ca: fs.readFileSync('/opt/epaas/certs/ca', 'utf8'),
+   passphrase: fs.readFileSync('/opt/epaas/certs/pass', 'utf8'),
+   requestCert: true, 
+   rejectUnauthorized: false 
  };
-
-var server = https.createServer(sslOptions, app);
-app.listen(config.healthCheckPort, () => console.log(`Example app listening on port ${config.healthCheckPort}!`))
+ sslOptions.agent = new https.Agent(sslOptions);
 
 app.get('/health', function(req, res) {
+  console.log("inside /health req");
   res.send('HealthCheckResponse:ok').status(200);
 });
+app.listen(config.healthCheckPort, () => console.log(`Example app listening on port ${config.healthCheckPort}!`))
+var server = https.createServer(sslOptions, app);
+
+
 /**time format syntax
 Seconds: 0-59
 Minutes: 0-59
@@ -46,11 +54,14 @@ function onTick() {
   console.log('******* You will see this message on Cron-Job start ********');
   getWorkspaceUserList();
 }
-
+//getWorkspaceUserList();
 //gets users list of a workspace
 function getWorkspaceUserList() {
   var options = {
     uri: config.getUserEndpoint,
+    tunnle: true,
+    agentOptions: sslOptions,
+    method: 'GET',
     qs: {
       token: process.env.apptoken // -> uri + '?access_token=xxxxx%20xxxxx'
     },
@@ -82,6 +93,9 @@ function pushMessageToAll(usersList) {
       console.log('pushMessageToAll: user name/real_name/id ==>', user.name, user.real_name, user.id);
       var options = {
         uri: config.postMessageEndpoint,
+        agentOptions: sslOptions,
+        tunnle: true,
+        method: 'GET',
         qs: {
           token: process.env.apptoken, // -> uri + '?access_token=xxxxx%20xxxxx'
           channel: user.id, //user channel id	

@@ -17,15 +17,16 @@ var express = require('express');
 var app = express();
 var https = require('https');
 var sslOptions = {
-   // key: fs.readFileSync('/opt/epaas/certs/key', 'utf8'),
-   // cert: ['/opt/epaas/certs/cert', '/opt/epaas/certs/ca']
-   //   .map(c => fs.readFileSync(c, 'utf8'))
-   //   .join(os.EOL),
-   // passphrase: fs.readFileSync('/opt/epaas/certs/pass', 'utf8'),
+   key: fs.readFileSync('/opt/epaas/certs/key', 'utf8'),
+   cert: fs.readFileSync('/opt/epaas/certs/cert', 'utf8'),
+   ca: fs.readFileSync('/opt/epaas/certs/ca', 'utf8'),
+   passphrase: fs.readFileSync('/opt/epaas/certs/pass', 'utf8'),
+   requestCert: true, 
+   rejectUnauthorized: false 
  };
 
 var server = https.createServer(sslOptions, app);
-app.listen(config.healthCheckPort, () => console.log(`Example app listening on port ${config.healthCheckPort}!`))
+server.listen(config.healthCheckPort, () => console.log(`Example app listening on port ${config.healthCheckPort}!`))
 
 app.get('/health', function(req, res) {
   res.send('HealthCheckResponse:ok').status(200);
@@ -52,7 +53,7 @@ function getWorkspaceUserList() {
   var options = {
     uri: config.getUserEndpoint,
     qs: {
-      token: process.EPASS_ENV.apptoken // -> uri + '?access_token=xxxxx%20xxxxx'
+      token: process.env.apptoken // -> uri + '?access_token=xxxxx%20xxxxx'
     },
     headers: {
       'User-Agent': 'Request-Promise'
@@ -83,7 +84,7 @@ function pushMessageToAll(usersList) {
       var options = {
         uri: config.postMessageEndpoint,
         qs: {
-          token: process.EPASS_ENV.apptoken, // -> uri + '?access_token=xxxxx%20xxxxx'
+          token: process.env.apptoken, // -> uri + '?access_token=xxxxx%20xxxxx'
           channel: user.id, //user channel id	
           text: config.postMessageContent
           // as_user: true //uncomment when msg context: APP. Otherwise bot.
